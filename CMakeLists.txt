@@ -25,6 +25,6 @@ else()
         message("-> Make sure the SFML libraries with the same configuration (Release/Debug, Static/Dynamic) exist.\n")
 endif()
 
-add_executable(miniTanks ${SOURCES})
+add_executable(gravity ${SOURCES})
 
-target_link_libraries(miniTanks ${SFML_LIBRARIES})
+target_link_libraries(gravity ${SFML_LIBRARIES})
