@@ -175,12 +175,12 @@ void SpaceStation::moveStation(char dir,float dt)
     float dx = normal_vel*dt;
     if(orbit_radius+dx <= max_altitude && orbit_radius+dx > game.planetRadius()+station.getLocalBounds().height/2+10)
     {
-        orbit_radius += dx;
         sf::Vector2f normal = position-game.gravitySrc();
         normal /= magnitude(normal);
         trajectory.setRadius(orbit_radius);
         trajectory.setOrigin(orbit_radius,orbit_radius);
         position += normal*dx;
+	orbit_radius = magnitude(position-game.gravitySrc());
         float v_o = sense*sqrt(game.gravityConst()/orbit_radius);
         velocity = {v_o*-normal.y,v_o*normal.x};
         rotation = atan2(-normal.x,normal.y);
