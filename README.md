@@ -16,6 +16,7 @@ Once you've downloaded the source from the [repository][repo] , run cmake and th
 On a linux system these are the typical steps
 ```sh
 $ git clone https://github.com/amhndu/gravity
+$ cd gravity
 $ cmake .
 $ make
 ```
