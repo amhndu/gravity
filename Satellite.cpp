@@ -1,5 +1,6 @@
 #include "Satellite.h"
 #include "Game.h"
+#include "obbcollision.h"
 
 Orbiter::Orbiter(Game& _game,OrbiterType t,const sf::Vector2f& pos,const sf::Vector2f& vel,float ang_vel) :
     type(t),
@@ -70,10 +71,12 @@ bool Satellite::checkCollision(Orbiter &b)
     case satellite:
         {
             auto satelliteB = static_cast<Satellite&>(b);
-            auto r = satelliteB.position-position;
-            auto r_mag = magnitude(r);
-            if(2*r_mag <= satBody.getLocalBounds().height+satelliteB.satBody.getLocalBounds().height)
+            if(satBody.getGlobalBounds().intersects(satelliteB.satBody.getGlobalBounds()) &&
+               iscolliding(satBody.getPosition(),sf::Vector2f{satBody.getLocalBounds().width,satBody.getLocalBounds().height},rotation,
+                           satelliteB.satBody.getPosition(),sf::Vector2f{satelliteB.satBody.getLocalBounds().width,satelliteB.satBody.getLocalBounds().height},satelliteB.rotation))
             {
+                auto r = satelliteB.position-position;
+                auto r_mag = magnitude(r);
                 result = true;
                 destroyed = true;
                 satelliteB.destroyed = true;
@@ -85,13 +88,15 @@ bool Satellite::checkCollision(Orbiter &b)
     case debris:
         {
             auto junk = static_cast<Debris&>(b);
-            auto r = junk.position-position;
-            auto r_mag = magnitude(r);
-            if(2*r_mag <= satBody.getLocalBounds().height+junk.debrisSpr.getLocalBounds().height)
+            if(satBody.getGlobalBounds().intersects(junk.debrisSpr.getGlobalBounds()) &&
+               iscolliding(satBody.getPosition(),sf::Vector2f{satBody.getLocalBounds().width,satBody.getLocalBounds().height},rotation,
+                           junk.debrisSpr.getPosition(),sf::Vector2f{junk.debrisSpr.getLocalBounds().width,junk.debrisSpr.getLocalBounds().height},junk.rotation))
             {
                 result = true;
                 destroyed = true;
                 junk.destroyed = true;
+                auto r = junk.position-position;
+                auto r_mag = magnitude(r);
                 game.addDebris(position,velocity+r*normal_velocity/r_mag);
             }
         }
@@ -206,10 +211,12 @@ bool SpaceStation::checkCollision(Orbiter &b)
     case satellite:
         {
             auto satelliteB = static_cast<Satellite&>(b);
-            auto r = satelliteB.position-position;
-            auto r_mag = magnitude(r);
-            if(2*r_mag <= station.getLocalBounds().height+satelliteB.satBody.getLocalBounds().height)
+            if(station.getGlobalBounds().intersects(satelliteB.satBody.getGlobalBounds()) &&
+               iscolliding(station.getPosition(),sf::Vector2f{station.getLocalBounds().width,station.getLocalBounds().height},rotation,
+                           satelliteB.satBody.getPosition(),sf::Vector2f{satelliteB.satBody.getLocalBounds().width,satelliteB.satBody.getLocalBounds().height},satelliteB.rotation))
             {
+                auto r = satelliteB.position-position;
+                auto r_mag = magnitude(r);
                 result = true;
                 destroyed = true;
                 satelliteB.destroyed = true;
@@ -221,13 +228,15 @@ bool SpaceStation::checkCollision(Orbiter &b)
     case debris:
         {
             auto junk = static_cast<Debris&>(b);
-            auto r = junk.position-position;
-            auto r_mag = magnitude(r);
-            if(2*r_mag <= station.getLocalBounds().height+junk.debrisSpr.getLocalBounds().height)
+            if(station.getGlobalBounds().intersects(junk.debrisSpr.getGlobalBounds()) &&
+               iscolliding(station.getPosition(),sf::Vector2f{station.getLocalBounds().width,station.getLocalBounds().height},rotation,
+                           junk.debrisSpr.getPosition(),sf::Vector2f{junk.debrisSpr.getLocalBounds().width,junk.debrisSpr.getLocalBounds().height},junk.rotation))
             {
                 result = true;
                 destroyed = true;
                 junk.destroyed = true;
+                auto r = junk.position-position;
+                auto r_mag = magnitude(r);
                 game.addDebris(position,velocity,true);
             }
         }
