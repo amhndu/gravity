@@ -13,7 +13,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules/;${CMAKE_MODULE_PATH};$
 set(SOURCES
     "${PROJECT_SOURCE_DIR}/main.cpp"
     "${PROJECT_SOURCE_DIR}/Game.cpp"
-    "${PROJECT_SOURCE_DIR}/Satellite.cpp" )
+    "${PROJECT_SOURCE_DIR}/Satellite.cpp"
+    "${PROJECT_SOURCE_DIR}/obbcollision.cpp" )
 # Find SFML
 find_package(SFML 2 COMPONENTS graphics window system)
 
