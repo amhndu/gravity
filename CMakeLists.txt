@@ -16,7 +16,7 @@ set(SOURCES
     "${PROJECT_SOURCE_DIR}/Satellite.cpp"
     "${PROJECT_SOURCE_DIR}/obbcollision.cpp" )
 # Find SFML
-find_package(SFML 2 COMPONENTS graphics window system)
+find_package(SFML 2 COMPONENTS graphics window system main)
 
 if(SFML_FOUND)
         include_directories(${SFML_INCLUDE_DIR})
