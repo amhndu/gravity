@@ -182,7 +182,13 @@ void Game::loadGameFromFile(string file_path)
 {
     ifstream file(file_path,ios::in | ios::binary);
     vector<char> data(sizeof(float));
-    file.read(&data[0],sizeof(float));
+    if(!file.read(&data[0],sizeof(float)))
+    {
+            message.setString("ERROR :: Unable to read from save file.");
+            message.setPosition(window.getSize().x/2-message.getLocalBounds().width/2,message.getPosition().y);
+            gameState = SplashScreen;
+            return;
+    }
     extract(0,survivedTime,data);
     char dat_size;
     data.reserve(30);
