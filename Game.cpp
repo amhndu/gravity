@@ -77,7 +77,7 @@ void Game::run()
                 sf::Vector2f mouse{float(winEvent.mouseButton.x),float(winEvent.mouseButton.y)};
                 if(newGame.getGlobalBounds().contains(mouse))
                 {
-                    if(gameState == GameOver)
+                    if(gameState != SplashScreen)
                     {
                         sats.clear();
                         sats.push_back(unique_ptr<Orbiter>(new SpaceStation(*this,150)));
