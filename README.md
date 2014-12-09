@@ -8,10 +8,9 @@ A game I made for my school project.
 The objective is to survive as long as you can in your space station avoiding other satellites and junk.
 This is a clone of the HTML5 game [Orbital Debris][orbital debris].
 
-The premise :
-You are inside a space station with unlimited fuel while the space agencies at Earth have gone crazy , they have made a large number of satellites and are launching satellites at any time any place while you have to dodge them. :)
 ###Screenshots
 
+(Note that these screenshots are outdated since the game now supports saving/loading , apart from the new buttons they are correct)
 http://i.imgur.com/4enX4oE.png  
 http://i.imgur.com/EkbtdSM.png  
 http://i.imgur.com/QEY2wz3.png  
@@ -19,6 +18,7 @@ http://i.imgur.com/cFigPKF.png
 
 ###Gameplay video
 
+(Note that this vidoe is outdated since the game now supports saving/loading , apart from the new buttons they are correct)
 [Youtube video](https://www.youtube.com/watch?v=LI_u30P6zTA)
 
 ###Compiling

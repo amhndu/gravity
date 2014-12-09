@@ -194,6 +194,8 @@ void Game::loadGameFromFile(string file_path)
         {
             message.setString("ERROR :: Unable to read from save file.");
             message.setPosition(window.getSize().x/2-message.getLocalBounds().width/2,message.getPosition().y);
+            gameState = SplashScreen;
+            return;
         }
         sats.push_back(move(Orbiter::deserialize(data,*this)));
     }

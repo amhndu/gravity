@@ -17,7 +17,11 @@ set(SOURCES
     "${PROJECT_SOURCE_DIR}/obbcollision.cpp"
     "${PROJECT_SOURCE_DIR}/functions.cpp" )
 # Find SFML
-find_package(SFML 2 COMPONENTS graphics window system main)
+if (SFML_OS_WINDOWS AND SFML_COMPILER_MSVC)
+    find_package( SFML 2 COMPONENTS main graphics window system )
+else()
+    find_package( SFML 2 COMPONENTS graphics window system )
+endif()
 
 if(SFML_FOUND)
         include_directories(${SFML_INCLUDE_DIR})
