@@ -1,40 +1,17 @@
 #ifndef GAME_H
 #define GAME_H
-#include <iostream>
-#include <cmath>
 #include <memory>
 #include <list>
-#include <SFML/Graphics.hpp>
-#ifndef M_PI    //Not defined on non-POSIX systems
-    #define M_PI 3.1415926535898
-#endif // M_PI
+#include <fstream>
+#include "functions.h"
 #include "Satellite.h"
 
 using namespace std;
 
-inline float TO_DEG(float rad)
-{
-    return rad*180.0f/M_PI;
-}
-
-inline float TO_RAD(float deg)
-{
-    return deg*M_PI/180.0f;
-}
-
-inline sf::Vector2f cos_sin(float angle)
-{
-    return {cos(angle),sin(angle)};
-}
-
-inline float magnitude(const sf::Vector2f& v)
-{
-    return hypot(v.x,v.y);
-}
 
 enum TextureName
 {
-    Junk0,Junk1,Junk2,Sat0,Sat1,Sat2,Sat3,Logo,NewGameBtn,Background
+    Junk0,Junk1,Junk2,Sat0,Sat1,Sat2,Sat3,Logo,NewGameBtn,LoadGameBtn,SaveGameBtn,Background
 };
 
 class Game
@@ -54,20 +31,24 @@ class Game
         {
             Playing,
             GameOver,
+            Pause,
             SplashScreen,
         } gameState;
         void loadTexture(TextureName name,string path);
         void newRandomSatellite();
+        void loadGameFromFile(string file_path);
+        void saveGameToFile(string file_path);
 
         float gravityAccConst;// = G * Mass of planet
         sf::RenderWindow window;
         sf::Event winEvent;
         sf::CircleShape Earth;
         sf::Texture earthTexture;
-        sf::Sprite bg,logo,newGame;
+        sf::Sprite bg,logo,newGame,loadGame,saveGame;
         sf::Font font;
-        sf::Text message;
-        sf::Text timerText;
+        sf::Text message,timerText;
+        sf::Clock timer;
+        float survivedTime = 0;
         list<unique_ptr<Orbiter>> sats;
         map<TextureName,unique_ptr<sf::Texture>> textures;
 };

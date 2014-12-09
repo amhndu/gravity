@@ -2,12 +2,12 @@
 #include "Game.h"
 #include "obbcollision.h"
 
-Orbiter::Orbiter(Game& _game,OrbiterType t,const sf::Vector2f& pos,const sf::Vector2f& vel,float ang_vel) :
+Orbiter::Orbiter(Game& _game,OrbiterType t,const sf::Vector2f& pos,const sf::Vector2f& vel,float ang_vel,float rot) :
     type(t),
     position(pos),
     velocity(vel),
     angularVelocity(ang_vel),
-    rotation(0),
+    rotation(rot),
     destroyed(false),
     game(_game)
 {}
@@ -23,17 +23,90 @@ void Orbiter::update(float dt)
     rotation += angularVelocity*dt;
 }
 
+vector<char> Orbiter::serialize()
+{
+    vector<char> data;
+    data.reserve(25);
+    data.push_back(static_cast<char>(type));
+    append(position,data);
+    append(velocity,data);
+    append(angularVelocity,data);
+    append(rotation,data);
+    return data;
+}
+std::unique_ptr<Orbiter> Orbiter::deserialize(std::vector<char> &data,Game& g)
+{
+    unique_ptr<Orbiter> orbiter;
+    char type;
+    size_t i = 0;
+    i = extract(i,type,data);
+    if(type < 0 || type > 2 || data.size() < Orbiter::size())
+        return {nullptr};
+    sf::Vector2f pos,vel;
+    float avel,rot;
+    i = extract(extract(extract(extract(i,pos,data),vel,data),avel,data),rot,data);
+    switch(static_cast<OrbiterType>(type))
+    {
+        case satellite:
+        {
+            float o,nv;
+            char t;
+            extract(extract(extract(i,o,data),nv,data),t,data);
+            orbiter.reset(static_cast<Orbiter*>(new Satellite(g,pos,vel,avel,rot,o,nv,t)));
+            break;
+        }
+        case debris:
+        {
+            float a;
+            char t;
+            extract(extract(i,a,data),t,data);
+            orbiter.reset(static_cast<Orbiter*>(new Debris(g,pos,vel,avel,rot,a,t)));
+            break;
+        }
+        case space_station:
+        {
+            float o,nv;
+            char s;
+            extract(extract(extract(i,o,data),nv,data),s,data);
+            orbiter.reset(static_cast<Orbiter*>(new SpaceStation(g,pos,vel,avel,rot,o,nv,s)));
+            break;
+        }
+    }
+    return orbiter;
+}
+
+
 //Implementations of functions of Satellite class
 Satellite::Satellite(Game& _game,float orbitRadius,const sf::Vector2f& pos):
     Orbiter(_game,satellite,pos),
-    targetOrbit(orbitRadius)
+    targetOrbit(orbitRadius),
+    sat_type(rand()%4)
 {
-    int sat_texture_num = rand()%4;
-    satBody.setTexture(game.getTexture(static_cast<TextureName>(Sat0+sat_texture_num)));
+    satBody.setTexture(game.getTexture(static_cast<TextureName>(Sat0+sat_type)));
     satBody.setOrigin(satBody.getLocalBounds().width/2,satBody.getLocalBounds().height);
     satBody.setPosition(position);
     sf::Vector2f normal = position - game.gravitySrc();
     rotation = atan2(-normal.x,normal.y);
+}
+
+Satellite::Satellite(Game& _game,const sf::Vector2f& pos,const sf::Vector2f& vel,float avel,float rot,float orbit,float nvel,char t) :
+    Orbiter(_game,satellite,pos,vel,avel,rot),
+    targetOrbit(orbit),
+    normal_velocity(nvel),
+    sat_type(t)
+{
+    satBody.setTexture(game.getTexture(static_cast<TextureName>(Sat0+sat_type)));
+    satBody.setOrigin(satBody.getLocalBounds().width/2,satBody.getLocalBounds().height);
+    satBody.setPosition(position);
+}
+
+std::vector<char> Satellite::serialize()
+{
+    std::vector<char> data{Orbiter::serialize()};
+    append(targetOrbit,data);
+    append(normal_velocity,data);
+    data.push_back(sat_type);
+    return data;
 }
 
 void Satellite::update(float dt)
@@ -108,13 +181,25 @@ bool Satellite::checkCollision(Orbiter &b)
 }
 
 Debris::Debris(Game& _game,const sf::Vector2f& pos,const sf::Vector2f& vel,float ang_vel) :
-    Orbiter(_game,debris,pos,vel,ang_vel),
-    age(0)
+    Debris(_game,pos,vel,ang_vel,0.0,0.0,rand()%3)
+{}
+
+Debris::Debris(Game& _game,const sf::Vector2f& pos,const sf::Vector2f& vel,float avel,float rot,float _age,char t) :
+    Orbiter(_game,debris,pos,vel,avel,rot),
+    age(_age),
+    debris_type(t)
 {
-    int texture_num = rand()%3;
-    debrisSpr.setTexture(game.getTexture(static_cast<TextureName>(Junk0+texture_num)));
+    debrisSpr.setTexture(game.getTexture(static_cast<TextureName>(Junk0+debris_type)));
     debrisSpr.setOrigin(debrisSpr.getLocalBounds().width/2,debrisSpr.getLocalBounds().height);
     debrisSpr.setPosition(position);
+}
+
+std::vector<char> Debris::serialize()
+{
+    std::vector<char> data{Orbiter::serialize()};
+    append(age,data);
+    data.push_back(debris_type);
+    return data;
 }
 void Debris::update(float dt)
 {
@@ -137,27 +222,40 @@ bool Debris::checkCollision(Orbiter& b)
     return false;
 }
 
-SpaceStation::SpaceStation(Game& _game,float radius) :
-    Orbiter(_game,space_station,_game.gravitySrc()+sf::Vector2f{0,radius}),
-    trajectory(radius,50),
-    orbit_radius(radius-1),
-    normal_vel(0),
-    sense(1-2*(rand()%2))
+SpaceStation::SpaceStation(Game& _game,float orbit) :
+    SpaceStation(_game,_game.gravitySrc()+sf::Vector2f{0,orbit},{0,0},0,0,orbit,0,1-2*(rand()%2))
 {
     sf::Vector2f normal = {0,1};
-    float v_o = sense*sqrt(game.gravityConst()/radius);
+    float v_o = sense*sqrt(game.gravityConst()/orbit);
     velocity = {v_o*-normal.y,v_o*normal.x};
-    angularVelocity = v_o/orbit_radius;
+    angularVelocity = v_o/orbit;
+}
+SpaceStation::SpaceStation(Game& _game,const sf::Vector2f& pos,const sf::Vector2f& vel,float avel,float rot,float orbit,float nvel,char s) :
+    Orbiter(_game,space_station,pos,vel,avel,rot),
+    trajectory(orbit,50),
+    orbit_radius(orbit-1),
+    normal_vel(nvel),
+    sense(s)
+{
     stationImg.loadFromFile("assets/station.png");
     station.setTexture(stationImg);
     station.setOrigin(station.getLocalBounds().width/2,station.getLocalBounds().height/2);
     station.setPosition(position);
-    trajectory.setOrigin(radius,radius);
+    trajectory.setOrigin(orbit,orbit);
     trajectory.setFillColor(sf::Color::Transparent);
     trajectory.setOutlineColor(sf::Color(0x9e,0xea,0xfe));
     trajectory.setOutlineThickness(1);
     trajectory.setPosition(game.gravitySrc());
 }
+std::vector<char> SpaceStation::serialize()
+{
+    std::vector<char> data{Orbiter::serialize()};
+    append(orbit_radius,data);
+    append(normal_vel,data);
+    data.push_back(sense);
+    return data;
+}
+
 void SpaceStation::update(float dt)
 {
     update(dt,true);
@@ -185,7 +283,7 @@ void SpaceStation::moveStation(char dir,float dt)
         trajectory.setRadius(orbit_radius);
         trajectory.setOrigin(orbit_radius,orbit_radius);
         position += normal*dx;
-	orbit_radius = magnitude(position-game.gravitySrc());
+        orbit_radius = magnitude(position-game.gravitySrc());
         float v_o = sense*sqrt(game.gravityConst()/orbit_radius);
         velocity = {v_o*-normal.y,v_o*normal.x};
         rotation = atan2(-normal.x,normal.y);
@@ -235,8 +333,6 @@ bool SpaceStation::checkCollision(Orbiter &b)
                 result = true;
                 destroyed = true;
                 junk.destroyed = true;
-                auto r = junk.position-position;
-                auto r_mag = magnitude(r);
                 game.addDebris(position,velocity,true);
             }
         }
