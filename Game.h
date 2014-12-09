@@ -40,6 +40,7 @@ class Game
         void saveGameToFile(string file_path);
 
         float gravityAccConst;// = G * Mass of planet
+        SpaceStation* station;
         sf::RenderWindow window;
         sf::Event winEvent;
         sf::CircleShape Earth;

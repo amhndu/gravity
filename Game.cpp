@@ -65,7 +65,7 @@ void Game::run()
     float newSatTimer = 0;
     const float satSpawnRateInv = 1; //seconds per new satellite
     sats.push_back(unique_ptr<Orbiter>(new SpaceStation(*this,150)));
-    SpaceStation* station = static_cast<SpaceStation*>(sats.back().get());
+    station = static_cast<SpaceStation*>(sats.back().get());
     while(window.isOpen())
     {
         while(window.pollEvent(winEvent))
@@ -186,7 +186,13 @@ void Game::loadGameFromFile(string file_path)
     {
             message.setString("ERROR :: Unable to read from save file.");
             message.setPosition(window.getSize().x/2-message.getLocalBounds().width/2,message.getPosition().y);
-            gameState = SplashScreen;
+            if(gameState != SplashScreen)
+            {
+                gameState = SplashScreen;
+                sats.clear();
+                sats.push_back(unique_ptr<Orbiter>(new SpaceStation(*this,150)));
+                station = static_cast<SpaceStation*>(sats.back().get());
+            }
             return;
     }
     extract(0,survivedTime,data);
@@ -201,6 +207,8 @@ void Game::loadGameFromFile(string file_path)
             message.setString("ERROR :: Unable to read from save file.");
             message.setPosition(window.getSize().x/2-message.getLocalBounds().width/2,message.getPosition().y);
             gameState = SplashScreen;
+            sats.push_back(unique_ptr<Orbiter>(new SpaceStation(*this,150)));
+            station = static_cast<SpaceStation*>(sats.back().get());
             return;
         }
         sats.push_back(move(Orbiter::deserialize(data,*this)));
