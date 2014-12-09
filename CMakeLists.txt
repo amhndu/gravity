@@ -14,7 +14,8 @@ set(SOURCES
     "${PROJECT_SOURCE_DIR}/main.cpp"
     "${PROJECT_SOURCE_DIR}/Game.cpp"
     "${PROJECT_SOURCE_DIR}/Satellite.cpp"
-    "${PROJECT_SOURCE_DIR}/obbcollision.cpp" )
+    "${PROJECT_SOURCE_DIR}/obbcollision.cpp"
+    "${PROJECT_SOURCE_DIR}/functions.cpp" )
 # Find SFML
 find_package(SFML 2 COMPONENTS graphics window system)
 
