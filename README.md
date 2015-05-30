@@ -36,14 +36,18 @@ $ ./gravity
 ```
 
 ###License
-The following images have been *scraped* from [here][orbital debris]
+The following images have been taken from [here][orbital debris]
 * assets/satellite\<n>.png where n = {0,1,2,3}
 * assets/junk\<n>.png where n = {0,1,2}
 * assets/Earth.png
 * assets/bg.png
 * assets/station.png
 
-Other than the above no rights have been reserved , but in the unlikely event that you use anything ,you could drop me a [mail][mailaddr] and link to the [GitHub repository][repo].
+Other than the above no rights have been reserved, but in the unlikely event that you use anything, please drop me a [mail][mailaddr].
+
+###Contact me
+Email : amhndu@gmail.com
+
 
 [orbital debris]: http://www.allworkallplay.org/games/orbitaldebris/
 [repo]: https://github.com/amhndu/gravity
