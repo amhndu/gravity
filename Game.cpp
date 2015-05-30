@@ -6,7 +6,7 @@
 Game::Game() :
     gameState(SplashScreen),
     gravityAccConst(650000),
-    window(sf::VideoMode(800,600),"Gravity Test"),
+    window(sf::VideoMode(800,600),"Gravity"),
     Earth(60)
 {
     loadTexture(Junk0,"assets/junk0.png");
