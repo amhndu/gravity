@@ -51,4 +51,3 @@ Email : amhndu --at-- gmail --period-- com
 
 [orbital debris]: http://www.allworkallplay.org/games/orbitaldebris/
 [repo]: https://github.com/amhndu/gravity
-[mailaddr]: mailto:amhndu@gmail.com
