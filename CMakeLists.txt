@@ -32,5 +32,5 @@ else()
 endif()
 
 add_executable(gravity ${SOURCES})
-
+file(COPY assets DESTINATION .)
 target_link_libraries(gravity ${SFML_LIBRARIES})
