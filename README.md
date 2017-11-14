@@ -3,7 +3,7 @@
 
 **An Orbital survival game**
 
-Project page: http://amhndu.me/Projects/gravity.html
+Project page: http://amhndu.github.io/Projects/gravity.html
 
 Gravity is a survial game set in space, you are in a space station orbiting Earth but things have gone awry and you have a situation with broken satellites, how long can you survie ? (Yes, the premise is very similar to that Hollywood movie of the same name).  
 Programmed in C++11 with the [SFML](http://sfml-dev.org) library for graphics. I made this is as my final project in school. This is a clone of the HTML5 game [Orbital Debris][orbital debris].
@@ -11,10 +11,10 @@ Programmed in C++11 with the [SFML](http://sfml-dev.org) library for graphics. I
 Screenshots
 -----------------------------
 
-![Screenshot 1](http://amhndu.me/Projects/screenshots/gravity1.jpg)
-![Screenshot 2](http://amhndu.me/Projects/screenshots/gravity2.jpg)
-![Screenshot 3](http://amhndu.me/Projects/screenshots/gravity3.jpg)
-![Screenshot 4](http://amhndu.me/Projects/screenshots/gravity4.jpg)
+![Screenshot 1](http://amhndu.github.io/Projects/screenshots/gravity1.jpg)
+![Screenshot 2](http://amhndu.github.io/Projects/screenshots/gravity2.jpg)
+![Screenshot 3](http://amhndu.github.io/Projects/screenshots/gravity3.jpg)
+![Screenshot 4](http://amhndu.github.io/Projects/screenshots/gravity4.jpg)
 
 Gameplay video
 ------------------------------

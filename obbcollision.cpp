@@ -1,4 +1,8 @@
 #include "obbcollision.h"
+#include <cmath>
+
+using std::sin;
+using std::cos;
 
 float dot(const sf::Vector2f& a,const sf::Vector2f& b)
 {
