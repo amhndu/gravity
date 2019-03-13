@@ -11,10 +11,10 @@ Programmed in C++11 with the [SFML](http://sfml-dev.org) library for graphics. I
 Screenshots
 -----------------------------
 
-![Screenshot 1](http://amhndu.github.io/Projects/screenshots/gravity1.jpg)
-![Screenshot 2](http://amhndu.github.io/Projects/screenshots/gravity2.jpg)
-![Screenshot 3](http://amhndu.github.io/Projects/screenshots/gravity3.jpg)
-![Screenshot 4](http://amhndu.github.io/Projects/screenshots/gravity4.jpg)
+![Screenshot 1](http://amhndu.github.io/screenshots/gravity1.jpg)
+![Screenshot 2](http://amhndu.github.io/screenshots/gravity2.jpg)
+![Screenshot 3](http://amhndu.github.io/screenshots/gravity3.jpg)
+![Screenshot 4](http://amhndu.github.io/screenshots/gravity4.jpg)
 
 Gameplay video
 ------------------------------
