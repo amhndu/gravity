@@ -5,7 +5,7 @@
 
 Project page: http://amhndu.github.io/Projects/gravity.html
 
-Gravity is a survial game set in space, you are in a space station orbiting Earth but things have gone awry and you have a situation with broken satellites, how long can you survie ? (Yes, the premise is very similar to that Hollywood movie of the same name).  
+Gravity is a survial game set in space, you are in a space station orbiting Earth but things have gone awry and you have a situation with broken satellites, how long can you survie ? (Yes, the premise is very similar to that Hollywood movie of the same name).
 Programmed in C++11 with the [SFML](http://sfml-dev.org) library for graphics. I made this is as my final project in school. This is a clone of the HTML5 game [Orbital Debris][orbital debris].
 
 Screenshots
@@ -25,8 +25,8 @@ Gameplay video
 Compiling
 ------------------------------
 
-You need a C++11 compliant compiler and [SFML 2.0+](http://sfml-dev.org) to compile *Gravity*. After you've downloaded the source and dependencies, you can use [cmake](http://cmake.org) to compile *Gravity*.  
-On any Linux distribution, these are the typical steps :  
+You need a C++11 compliant compiler and [SFML 2.0+](http://sfml-dev.org) to compile *Gravity*. After you've downloaded the source and dependencies, you can use [cmake](http://cmake.org) to compile *Gravity*.
+On any Linux distribution, these are the typical steps :
 ```
 $ git clone https://github.com/amhndu/gravity
 $ cd gravity
@@ -48,7 +48,7 @@ The following images have been taken from [here][orbital debris]
 * assets/bg.png
 * assets/station.png
 
-Other than the above no rights have been reserved, but in the unlikely event that you use anything, please drop me a [mail][mailaddr].
+For code, see LICENSE
 
 Contact me
 ---------------------------------
